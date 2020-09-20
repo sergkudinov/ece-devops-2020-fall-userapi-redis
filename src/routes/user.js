@@ -6,8 +6,19 @@ const userRouter = express.Router()
 userRouter
   .post('/', (req, resp) => {
     user.create(req.body, (err, res) => {
-      if(err) return resp.status(500).send(err)
-      resp.status(201).send(res)
+      let respObj
+      if(err) {
+        respObj = {
+          status: "error",
+          msg: err.message
+        }
+        return resp.status(400).json(respObj)
+      }
+      respObj = {
+        status: "success",
+        msg: res
+      }
+      resp.status(201).json(respObj)
     })
   })
   // .get('/:username', (req, resp, next) => { // Express URL params - https://expressjs.com/en/guide/routing.html
